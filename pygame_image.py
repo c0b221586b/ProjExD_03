@@ -7,9 +7,10 @@ def main():
     screen = pg.display.set_mode((800, 600))
     clock  = pg.time.Clock()
     bg_img = pg.image.load("ex01/fig/pg_bg.jpg")
-    koukaton_img = pg.image.load("exo1/fig/3.png")
+    koukaton_img = pg.image.load("ex01/fig/3.png")
     koukaton_img = pg.transform.flip(koukaton_img, True, False)
-    
+    yokoukaton_img = pg.transform.rotozoom(koukaton_img, 10, 1.0)
+    koukaton_list = [koukaton_img,yokoukaton_img]
     
     tmr = 0
     while True:
