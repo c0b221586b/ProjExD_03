@@ -141,6 +141,12 @@ class Beam:
         screen.blit(self.img,self.rct)
 
 
+class Explosion:
+    
+    def __init__(self,):
+        self.img = pg.image.load(f"ex03/fig/explotion.gif")
+        ex_list = []
+        
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
