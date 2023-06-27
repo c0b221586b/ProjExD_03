@@ -49,8 +49,23 @@ class Bird:
             True, 
             False
         )
+        self.img2 = pg.transform.flip(self.img,True, False)
         self.rct = self.img.get_rect()
         self.rct.center = xy
+
+        self.kk_dict = {
+            (0, 0):self.img,
+            (-5, -5):pg.transform.rotozoom(self.img2, -45, 1.0),
+            (-5, 0):self.img2,
+            (-5, +5):pg.transform.rotozoom(self.img2, 45, 1.0),
+            (0, +5):pg.transform.rotozoom(self.img,-90, 1.0),
+            (+5, +5):pg.transform.rotozoom(self.img,-45, 1.0),
+            (+5, 0):self.img,
+            (+5,-5):pg.transform.rotozoom(self.img, 45, 1.0),
+            (0, -5):pg.transform.rotozoom(self.img, 90, 1.0),
+        }
+        self.img = self.kk_dict[(+5, 0)]
+        
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -75,7 +90,8 @@ class Bird:
         self.rct.move_ip(sum_mv)
         if check_bound(self.rct) != (True, True):
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(self.img, self.rct)
+        
+        screen.blit(self.kk_dict[tuple(sum_mv)], self.rct)
 
 
 class Bomb:
@@ -125,6 +141,18 @@ class Beam:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img,self.rct)
 
+class Explotion:
+
+    def __init__(self,bomb: Bomb):
+        self.img = pg.image.load(f"ex03/fig/explotion.gif")
+        self.Ex_list = [pg.transform.rotozoom(self.img, 0, 1.0), pg.transform.rotozoom(self.img, 90, 1.0), pg.transform.rotozoom(self.img, 180, 1.0), pg.transform.rotozoom(self.img, 270, 1.0)] #上左下右
+        self.rct = self.img.get_rect()
+        self.rct.center = bomb.rct.center
+        self.life = 100
+
+    def update(self,screen: pg.Surface):
+        self.life -= 1
+        screen.blit(self.Ex_list[self.life%4], self.rct)
 
 
 def main():
@@ -134,6 +162,7 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
     beam = None
+    explotions = []
 
     clock = pg.time.Clock()
     tmr = 0 
@@ -167,10 +196,14 @@ def main():
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         bombs = [bomb for bomb in bombs if bomb is not None]
+        explotions = [explotion for explotion in explotions if Explotion.life > 0]
         for bomb in bombs:
             bomb.update(screen)
         if beam is not None:
             beam.update(screen)
+        if explotion in explotions:
+            explotion.update(screen)
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
