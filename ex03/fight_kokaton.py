@@ -143,7 +143,7 @@ class Beam:
 
 class Explosion:
     
-    def __init__(self,):
+    def __init__(self,): 
         self.img = pg.image.load(f"ex03/fig/explotion.gif")
         ex_list = []
         
