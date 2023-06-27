@@ -3,7 +3,7 @@ import sys
 
 def main():
     pg.display.set_caption("来世は巨乳美少女")
-    screen = pg.display.set_mode((100, 200))
+    screen = pg.display.set_mode((100, 00))
     clock = pg.time.Clock()
     font = pg.font.Font(None, 80)
 
