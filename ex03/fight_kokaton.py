@@ -48,9 +48,23 @@ class Bird:
             True, 
             False
         )
+        self.img2 = pg.transform.flip(self.img, True, False)
         self.rct = self.img.get_rect()
         self.rct.center = xy
 
+        self.kk_dict = {
+            (0, 0):self.img,
+            (-5, -5):pg.transform.rotozoom(self.img2, -45, 1.0),
+            (-5, 0):self.img2,
+            (-5, +5):pg.transform.rotozoom(self.img2, 45, 1.0),
+            (0, +5):pg.transform.rotozoom(self.img,-90, 1.0),
+            (+5, +5):pg.transform.rotozoom(self.img,-45, 1.0),
+            (+5, 0):self.img,
+            (+5,-5):pg.transform.rotozoom(self.img, 45, 1.0),
+            (0, -5):pg.transform.rotozoom(self.img, 90, 1.0),
+        }
+        self.img = self.kk_dict[(+5, 0)]
+    
     def change_img(self, num: int, screen: pg.Surface):
         """
         こうかとん画像を切り替え，画面に転送する
@@ -74,7 +88,8 @@ class Bird:
         self.rct.move_ip(sum_mv)
         if check_bound(self.rct) != (True, True):
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(self.img, self.rct)
+        #screen.blit(self.img, self.rct)
+        screen.blit(self.kk_dict[tuple(sum_mv)], self.rct)
 
 
 class Bomb:
