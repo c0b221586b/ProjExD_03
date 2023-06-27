@@ -54,7 +54,7 @@ class Bird:
         self.rct.center = xy
 
         self.kk_dict = {
-            (0, 0):self.img,
+            (0, 0):self.img, #何も入力されていない際のこうかとんの向き（右）
             (-5, -5):pg.transform.rotozoom(self.img2, -45, 1.0),
             (-5, 0):self.img2,
             (-5, +5):pg.transform.rotozoom(self.img2, 45, 1.0),
